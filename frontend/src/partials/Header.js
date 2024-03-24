@@ -4,6 +4,8 @@ import "./Header.css";
 
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
+  const isAuthenticated = true;
+
   return (
     <section className="header mb-3">
       <nav className="sec-1 border-bottom">
@@ -57,13 +59,37 @@ function Header() {
             <Link className="navbar-brand" to="/">
               <img src="./images/goldcroplogo.svg" alt="" />
             </Link>
-            <div className="d-flex header-icons d-lg-none">
+            <div className="d-flex header-icons d-lg-none align-items-center">
               <Link to="/cart">
                 <i className="bi bi-bag-heart"></i>
               </Link>
-              <Link to="/profile">
-                <i className="bi bi-person"></i>
-              </Link>
+
+              {isAuthenticated ? (
+                <div class="dropdown">
+                  <button class="dropdown-btn">
+                    <i className="bi bi-person"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div>
+                      <div>
+                        <strong>Name : </strong>
+                        <span>Harsh Yadav</span>
+                      </div>
+                      <div>
+                        <strong>Email : </strong>
+                        <span>yaduvansi524@gmail.com</span>
+                      </div>
+                    </div>
+                    <hr></hr>
+                    <Link to="/profile">Account</Link>
+                    <Link>Log Out</Link>
+                  </div>
+                </div>
+              ) : (
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              )}
             </div>
             <div className="collapse navbar-collapse" id="navbarScroll">
               <ul
@@ -100,16 +126,39 @@ function Header() {
                   </div>
                 </div>
               </form>
-              <div className="d-flex header-icons d-none d-lg-flex notifications-icon-container">
+              <div className="d-flex header-icons d-none d-lg-flex notifications-icon-container align-items-center">
                 <Link to="/cart">
                   {cartItems.length > 0 && (
                     <div class="notifications-count">{cartItems.length}</div>
                   )}
                   <i className="bi bi-bag-heart"></i>
                 </Link>
-                <Link to="/profile">
-                  <i className="bi bi-person"></i>
-                </Link>
+                {isAuthenticated ? (
+                  <div class="dropdown">
+                    <button class="dropdown-btn">
+                      <i className="bi bi-person"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <div>
+                        <div>
+                          <strong>Name : </strong>
+                          <span>Harsh Yadav</span>
+                        </div>
+                        <div>
+                          <strong>Email : </strong>
+                          <span>yaduvansi524@gmail.com</span>
+                        </div>
+                      </div>
+                      <hr></hr>
+                      <Link to="/profile">Account</Link>
+                      <Link>Log Out</Link>
+                    </div>
+                  </div>
+                ) : (
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                )}
               </div>
             </div>
           </div>
