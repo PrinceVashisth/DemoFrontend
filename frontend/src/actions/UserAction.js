@@ -31,7 +31,7 @@ import {
     } catch (error) {
       dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
     }
-  };
+  };  
   
   //REGISTER USER
   export const register = (userData) => async (dispatch) => {

@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const regc = require('../controllers/regController');
 const productController = require('../controllers/productController');
 const categoryController = require('../controllers/categoryController');
+const orderController = require('../controllers/orderController');
+const { isAuthenticated, authorizeRoles } = require('../Middleware/Auth');
 
 
 const storage = multer.diskStorage({
@@ -26,16 +28,16 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); 
 router.use(upload.array()); 
 
-const isAuthenticated = (req, res, next) => {
-  // Check if user is logged in
-  if (!req.session || !req.session.user) {
-      return res.status(401).json({
-          status: 401,
-          message: "Unauthorized: Please log in to access this resource"
-      });
-  }
-  next();
-};
+// const isAuthenticated = (req, res, next) => {
+//   // Check if user is logged in
+//   if (!req.session || !req.session.user) {
+//       return res.status(401).json({
+//           status: 401,
+//           message: "Unauthorized: Please log in to access this resource"
+//       });
+//   }
+//   next();
+// };
 
 
 
@@ -57,6 +59,20 @@ router.get('/user/profile', (req, res) => {
       user: user
   });
 });
+router.route("/order/new").post(isAuthenticated, orderController.newOrder);
+
+router.route("/order/:id").get(isAuthenticated, orderController.getSingleProduct);
+
+router.route("/orders/me").get(isAuthenticated, orderController.myOrder);
+
+router
+  .route("/admin/order")
+  .get(isAuthenticated, authorizeRoles("admin"), orderController.getAllOrder);
+
+router
+  .route("/admin/order/:id")
+  .put(isAuthenticated, authorizeRoles("admin"), orderController.updateOrder)
+  .delete(isAuthenticated, authorizeRoles("admin"), orderController.deleteOrder);
 
 
 module.exports = router;
