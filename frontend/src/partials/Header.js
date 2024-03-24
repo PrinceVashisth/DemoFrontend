@@ -6,6 +6,11 @@ function Header() {
   const { cartItems } = useSelector((state) => state.cart);
   const isAuthenticated = true;
 
+  const userDetails = {
+    name: "Harsh yadav",
+    email: "Yaduvansi524@gmail.com",
+  };
+
   return (
     <section className="header mb-3">
       <nav className="sec-1 border-bottom">
@@ -73,11 +78,11 @@ function Header() {
                     <div>
                       <div>
                         <strong>Name : </strong>
-                        <span>Harsh Yadav</span>
+                        <span>{userDetails.name}</span>
                       </div>
                       <div>
                         <strong>Email : </strong>
-                        <span>yaduvansi524@gmail.com</span>
+                        <span>{userDetails.email}</span>
                       </div>
                     </div>
                     <hr></hr>
@@ -142,11 +147,11 @@ function Header() {
                       <div>
                         <div>
                           <strong>Name : </strong>
-                          <span>Harsh Yadav</span>
+                          <span>{userDetails.name}</span>
                         </div>
                         <div>
                           <strong>Email : </strong>
-                          <span>yaduvansi524@gmail.com</span>
+                          <span>{userDetails.email}</span>
                         </div>
                       </div>
                       <hr></hr>
