@@ -5,27 +5,19 @@ import Header from "./partials/AdminHeader";
 import Left from "./partials/Left";
 
 function CategoryDash() {
-<<<<<<< HEAD
-=======
     // State hooks for managing categories and form visibility
     const [categories, setCategories] = useState([]);
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
     const [showForm, setShowForm] = useState(false);
     const [nameError, setNameError] = useState('');
     const [newCategory, setNewCategory] = useState({
         name: '',
     });
     const [selectedCategory, setSelectedCategory] = useState(null);
-<<<<<<< HEAD
     const [isEditing, setIsEditing] = useState(false); // Initialize isEditing as false
-=======
-    const [isEditing, setIsEditing] = useState();
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
     const dispatch = useDispatch();
     const { categoryItems } = useSelector((state)=>state.category);
 
     const validateForm = () => {
-<<<<<<< HEAD
         if (!newCategory.name.trim()) {
             setNameError('Please enter category name');
             return false;
@@ -37,22 +29,6 @@ function CategoryDash() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-=======
-        let valid = true;
-        if (!newCategory.name.trim()) {
-            setNameError('Please enter your name');
-            valid = false;
-        } else {
-            setNameError('');
-        }
-        return valid;
-    };
-
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
         setNewCategory((prevCategory) => ({
             ...prevCategory,
             [name]: value,
@@ -61,7 +37,6 @@ function CategoryDash() {
 
     const handleAddCategory = async (e) => {
         e.preventDefault();
-<<<<<<< HEAD
     
         if (!validateForm()) {
             return;
@@ -100,112 +75,11 @@ function CategoryDash() {
         const confirmDelete = window.confirm("Are you sure you want to delete this category?");
         if (confirmDelete) {
             dispatch(removeItemFromCategory(categoryId));
-=======
-        console.log('Adding/Editing category...');
-
-        if (!validateForm()) {
-            return;
-        }
-        // try {
-        //     const url = selectedCategory ? `/api/categories/${selectedCategory._id}` : '/api/categories';
-        //     const method = selectedCategory ? 'PUT' : 'POST';
-
-        //     const response = await fetch(url, {
-        //         method,
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(newCategory),
-        //     });
-
-        //     if (response.ok) {
-        //         const updatedCategory = await response.json();
-
-        //         if (selectedCategory) {
-        //             // Replace the existing category with the updated details
-        //             setCategories(categories.map(category =>
-        //                 category._id === updatedCategory._id ? updatedCategory : category
-        //             ));
-        //         } else {
-        //             // Add the new category to the list
-        //             setCategories([...categories, updatedCategory]);
-        //         }
-
-        //         // Reset form and selected category
-        //         setNewCategory({ name: '' });
-        //         setSelectedCategory(null);
-
-        //         setShowForm(false);
-        //     } else {
-        //         const errorMessage = await response.text();
-        //         console.error('Error adding/editing category:', errorMessage);
-        //     }
-        // } catch (error) {
-        //     console.error('Error adding/editing category', error);
-        // }
-
-        dispatch(addCategory(newCategory));
-
-        // Reset form and selected category
-        setNewCategory({ name: '' });
-        setSelectedCategory(null);
-        setShowForm(false);
-
-    };
-
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch('/api/categories');
-            if (response.ok) {
-                const data = await response.json();
-                // dispatch();
-            } else {
-                console.error('Error fetching categories');
-            }
-        } catch (error) {
-            console.error('Error fetching categories', error);
-        }
-    };
-
-    const handleEditClick = (categoryId) => {
-        // setSelectedCategory(category);
-        // setNewCategory({
-        //     name: category.name,
-        // });
-        dispatch(updateItemFromCategory(categoryId,newCategory));
-        setIsEditing(true);
-        setShowForm(true);
-    };
-
-    const handleDeleteClick = async (categoryId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this category?");
-        if (confirmDelete) {
-            // try {
-            //     const response = await fetch(`/api/categories/${categoryId}`, {
-            //         method: 'DELETE',
-            //     });
-
-            //     if (response.ok) {
-            //         setCategories(categories.filter(category => category._id !== categoryId));
-            //     } else {
-            //         const errorMessage = await response.text();
-            //         console.error('Error deleting category:', errorMessage);
-            //     }
-            // } catch (error) {
-            //     console.error('Error deleting category', error);
-            // }
-            dispatch(removeItemFromCategory(categoryId));
-            
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
         }
     };
 
     useEffect(() => {
-<<<<<<< HEAD
-        // Fetch categories or any other initialization
-=======
-        fetchCategories();
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
+        
     }, []);
 
     return (
@@ -217,10 +91,6 @@ function CategoryDash() {
                         <Left />
                         <div className="col-md-8">
                             <h1>Category Dashboard</h1>
-<<<<<<< HEAD
-=======
-
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
                             <div>
                                 <button onClick={() => setShowForm(!showForm)} className="btn btn-success form-control my-3">
                                     {showForm ? 'Hide Form' : 'Add Category'}
@@ -228,11 +98,7 @@ function CategoryDash() {
                                 {showForm && (
                                     <div className="card">
                                         <div className="card-header">
-<<<<<<< HEAD
-                                            <h2>{isEditing ? 'Edit Category' : 'Add Category'}</h2>
-=======
                                             <h2>Add Category</h2>
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
                                         </div>
                                         <div className="card-body">
                                             <form onSubmit={handleAddCategory}>
@@ -246,17 +112,12 @@ function CategoryDash() {
                                                         className="form-control"
                                                     />
                                                     {nameError && <div className="text-danger">{nameError}</div>}
-<<<<<<< HEAD
-                                                </div>
-                                                <button type="submit" className="btn btn-primary mt-2 form-control">
-=======
 
                                                 </div>
                                                 <button
                                                     type="submit"
                                                     className="btn btn-primary mt-2 form-control"
                                                 >
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
                                                     {isEditing ? 'Update Category' : 'Add Category'}
                                                 </button>
                                             </form>
@@ -264,10 +125,6 @@ function CategoryDash() {
                                     </div>
                                 )}
                             </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
                             {!showForm && (
                                 <div>
                                     <h2>Category List</h2>
@@ -296,12 +153,6 @@ function CategoryDash() {
                                             )}
                                         </tbody>
                                     </table>
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 7dc58301dba6451e391c03ca79b3497b85caf71b
                                 </div>
                             )}
                         </div>
