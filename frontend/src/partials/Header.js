@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Logo from "../images/logo-removebg.png";
 import "./Header.css";
 
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <section className="header mb-3">
       <nav className="sec-1 border-bottom">
@@ -15,29 +18,23 @@ function Header() {
               </a>
             </li>
           </ul>
-          {/* <ul className="nav social-icons d-none d-md-block">
+          <ul className="nav social-icons d-none d-md-block">
             <li className="nav-item">
-              <a
-                href="https://www.facebook.com/profile.php?id=61555291071635"
-                className="nav-link link-dark"
-              >
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-facebook"></i>
               </a>
             </li>
             <li className="nav-item">
-              <a
-                href="https://www.instagram.com/eiko.patisserie/"
-                className="nav-link link-dark"
-              >
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-instagram"></i>
               </a>
             </li>
             <li className="nav-item">
-              <a href="https://wa.me/9643280404" className="nav-link link-dark">
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-whatsapp"></i>
               </a>
             </li>
-          </ul> */}
+          </ul>
         </div>
       </nav>
       <header className="border-bottom">
@@ -55,13 +52,17 @@ function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
             <Link className="navbar-brand" to="/">
-              <img src="./images/goldcroplogo.svg" alt="" />
+              <img
+                src={Logo}
+                alt=""
+                style={{ maxWidth: "150px", height: "auto" }}
+              />
             </Link>
             <div className="d-flex header-icons d-lg-none">
               <Link to="/cart">
                 <i className="bi bi-bag-heart"></i>
               </Link>
-              <Link to="/profile">
+              <Link to="/user/profile">
                 <i className="bi bi-person"></i>
               </Link>
             </div>
@@ -76,12 +77,12 @@ function Header() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" to="/">
+                  <a className="nav-link" to="/products?category=food">
                     Food
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/products">
+                  <Link className="nav-link" to="/products?category=cakes">
                     Cakes
                   </Link>
                 </li>
@@ -107,7 +108,7 @@ function Header() {
                   )}
                   <i className="bi bi-bag-heart"></i>
                 </Link>
-                <Link to="/profile">
+                <Link to="/user/profile">
                   <i className="bi bi-person"></i>
                 </Link>
               </div>

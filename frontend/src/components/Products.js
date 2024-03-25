@@ -34,6 +34,7 @@ const Products = () => {
       try {
         const response = await fetch(SERVER_URL + "/api/products"); // Update the URL to match your backend endpoint
         const data = await response.json();
+        console.log("Fetched Products:", data);
         setProducts(data);
         setShowPreloader(false);
       } catch (error) {
@@ -98,11 +99,7 @@ const Products = () => {
     const cartItemExist = cartItems.find((item) => item.product === productId);
     console.log("cartItemExist :", cartItemExist);
 
-    if (cartItemExist) {
-      const newQuantity = cartItemExist.quantity + 1;
-      dispatch(addItemsToCart(productId, newQuantity));
-      alert.success("Item quantity increased");
-    } else {
+    if (!cartItemExist) {
       // If the product is not in the cart, add it with a quantity of 1
       dispatch(addItemsToCart(productId, 1));
       alert.success("Item added to cart successfully");

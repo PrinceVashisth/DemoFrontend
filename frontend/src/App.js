@@ -14,6 +14,7 @@ import ProductDetails from "./components/ProductDetails.js";
 import Footer from "./partials/Footer.js";
 import Header from "./partials/Header.js";
 import Profile from "./components/Profile.js";
+import LoginSignup from "./components/user/LoginSignup";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/orders/confirm" element={<ConfirmOrders />} />
+
+        <Route path="/user/login" element={<LoginSignup />} />
+        <Route path="/user/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </BrowserRouter>
