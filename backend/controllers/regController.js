@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorhander");
+const ErrorHandler = require("../utils/errorHandler");
 const Reg = require('../models/reg')
 const crypto = require("crypto");
 const sendToken = require("../utils/jwtTokens");

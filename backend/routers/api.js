@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const regc = require('../controllers/regController');
 const productController = require('../controllers/productController');
 const categoryController = require('../controllers/categoryController');
@@ -23,6 +24,8 @@ const upload = multer({
     fileSize: 15 * 1024 * 1024, // 5 MB limit per file
   },
 });
+
+router.use(cookieParser());
 
 router.use(bodyParser.json()); 
 router.use(bodyParser.urlencoded({ extended: true })); 

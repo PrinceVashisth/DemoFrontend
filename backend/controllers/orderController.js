@@ -2,7 +2,7 @@ const Order = require("../models/order");
 const Product = require("../models/products");
 const User = require("../models/reg");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHander = require("../utils/errorhander");
+const ErrorHander = require("../utils/errorHandler");
 
 //creating order details
 exports.newOrder = catchAsyncError(async (req, res, next) => {
