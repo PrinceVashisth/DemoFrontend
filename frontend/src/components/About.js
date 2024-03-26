@@ -1,4 +1,6 @@
 import React from "react";
+import { MdLocationPin } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -64,6 +66,15 @@ const About = () => {
               <h2 className="sectionhead mb-3  text-center text-uppercase">
                 Our Locations
               </h2>
+              <div style={{ lineHeight: "2rem", fontWeight: "100" }}>
+                Omaxe World Street, Faridabad{" "}
+                <Link
+                  to="https://maps.app.goo.gl/WkLB8pLj1VDZ3uFw8"
+                  target="_blank"
+                >
+                  <MdLocationPin size={20} />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

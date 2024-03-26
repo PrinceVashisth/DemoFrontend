@@ -236,9 +236,9 @@ const Terms = () => {
               >
                 <p>
                   These terms will be governed by and interpreted in accordance
-                  with the laws of the state of [Your State], and you submit to
-                  the non-exclusive jurisdiction of the state and federal courts
-                  located in [Your State] for the resolution of any disputes.
+                  with the laws of the state of Haryana, and you submit to the
+                  non-exclusive jurisdiction of the state and federal courts
+                  located in Haryana for the resolution of any disputes.
                 </p>
               </div>
             </div>
