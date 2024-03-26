@@ -6,8 +6,13 @@ import {
   MdOutlineSearch,
 } from "react-icons/md";
 import SERVER_URL from "../constants/ServerConstant";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Profile = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
+
   const orderDetails = [
     // {
     //   name: "Barbeque Barbeque Barbeque",
@@ -16,15 +21,18 @@ const Profile = () => {
     // },
   ];
 
+  useEffect(() => {
+    console.log(user);
+  });
+
   const userDetails = {
     name: "Harsh yadav",
     email: "yaduvansi524@gmail.com",
   };
 
-  const loggedIn = false;
   return (
     <div>
-      {loggedIn ? (
+      {isAuthenticated ? (
         <>
           <div className="container">
             <h1>Account</h1>

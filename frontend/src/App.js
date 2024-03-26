@@ -15,6 +15,8 @@ import Footer from "./partials/Footer.js";
 import Header from "./partials/Header.js";
 import Profile from "./components/Profile.js";
 import LoginSignup from "./components/user/LoginSignup";
+import About from "./components/About.js";
+import Terms from "./components/Terms.js";
 
 function App() {
   return (
@@ -24,8 +26,7 @@ function App() {
         <Route path="/" element={<Mainpage />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Admindash />} />
         <Route path="/productdash" element={<ProductDash />} />
@@ -36,6 +37,8 @@ function App() {
 
         <Route path="/user/login" element={<LoginSignup />} />
         <Route path="/user/profile" element={<Profile />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/terms-and-conditions" element={<Terms />} />
       </Routes>
       <Footer />
     </BrowserRouter>

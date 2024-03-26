@@ -47,7 +47,7 @@ function Footer() {
                   </div>
                   <div className="col-4">
                     <li className="list-inline-item">
-                      <Link to="/">Terms & Conditions</Link>
+                      <Link to="/terms-and-conditions">Terms & Conditions</Link>
                     </li>
                   </div>
                 </div>
@@ -59,7 +59,7 @@ function Footer() {
                   </div>
                   <div className="col-4">
                     <li className="list-inline-item">
-                      <Link to="/">Our Locations</Link>
+                      <Link to="/about">Our Locations</Link>
                     </li>
                   </div>
                   <div className="col-4">

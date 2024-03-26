@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "../images/logo-removebg.png";
 import "./Header.css";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { FaSignOutAlt } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <section className="header mb-3">
@@ -62,9 +66,50 @@ function Header() {
               <Link to="/cart">
                 <i className="bi bi-bag-heart"></i>
               </Link>
-              <Link to="/user/profile">
-                <i className="bi bi-person"></i>
-              </Link>
+              {isAuthenticated ? (
+                <div class="dropdown">
+                  <button class="dropdown-btn">
+                    <i className="bi bi-person"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div className="p-2 d-flex align-items-center">
+                      <MdOutlineAccountCircle
+                        size={50}
+                        className="user-info-img "
+                      />
+
+                      <div className="p-1 strong">
+                        <strong>{user.name}</strong>
+                      </div>
+                    </div>
+                    <hr className="hr-dark mb-1 mx-1 color-app" />
+                    <Link
+                      to="/user/profile"
+                      className="d-flex align-items-center"
+                    >
+                      <div className="mx-1">
+                        <IoMdSettings />
+                      </div>
+                      Account
+                    </Link>
+                    <Link className="d-flex align-items-center">
+                      <div className="mx-1">
+                        <FaSignOutAlt />
+                      </div>
+                      Sign out
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                // <Link to="/user/profile">
+                //   <i className="bi bi-person"></i>
+                // </Link>
+                <div className="d-flex align-items-center ">
+                  <Link className="color-white" to="/user/login">
+                    Login or SignUp{" "}
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="collapse navbar-collapse" id="navbarScroll">
               <ul
@@ -108,9 +153,47 @@ function Header() {
                   )}
                   <i className="bi bi-bag-heart"></i>
                 </Link>
-                <Link to="/user/profile">
-                  <i className="bi bi-person"></i>
-                </Link>
+                {isAuthenticated ? (
+                  <div class="dropdown">
+                    <button class="dropdown-btn">
+                      <i className="bi bi-person"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <div className="p-2 d-flex align-items-center">
+                        <MdOutlineAccountCircle
+                          size={50}
+                          className="user-info-img "
+                        />
+
+                        <div className="p-1 strong">
+                          <strong>{user.name}</strong>
+                        </div>
+                      </div>
+                      <hr className="hr-dark mb-1 mx-1 color-app" />
+                      <Link
+                        to="/user/profile"
+                        className="d-flex align-items-center"
+                      >
+                        <div className="mx-1">
+                          <IoMdSettings />
+                        </div>
+                        Account
+                      </Link>
+                      <Link className="d-flex align-items-center">
+                        <div className="mx-1">
+                          <FaSignOutAlt />
+                        </div>
+                        Sign out
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="d-flex align-items-center color-white">
+                    <Link className="color-white" to="/user/login">
+                      Login or SignUp{" "}
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

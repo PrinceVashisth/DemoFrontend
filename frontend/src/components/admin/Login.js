@@ -1,36 +1,40 @@
-
 import { useContext, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { Contextapi } from "../../contexts/Contextapi"
+import { useNavigate } from "react-router-dom";
+import { Contextapi } from "../../contexts/Contextapi";
+import { SERVER_URL } from "../../constants/ServerConstant";
 
 function Login() {
-  const{setLoginname} =useContext(Contextapi)
-  let navigate = useNavigate('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-  const [login, setLogin] = useState('')
+  const { setLoginname } = useContext(Contextapi);
+  let navigate = useNavigate("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [login, setLogin] = useState("");
   function handleForm(e) {
-    e.preventDefault()
-    const data = { email, password }
-    fetch('/api/logincheck', {
-      method: 'POST',
+    e.preventDefault();
+    const data = { email, password };
+    fetch(SERVER_URL + "/api/logincheck", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    }).then((result) => { return result.json() }).then((data) => {
-      // console.log(data)
-      if (data.status === 200 && data.email==='admin@gmail.com') {
-        localStorage.setItem('loginname',data.email)
-        setLoginname(localStorage.getItem('loginname'))
-        navigate('/dashboard')
-      } else if(data.status===200  && data.email!=='admin'){
-        localStorage.setItem('loginname',data.email)
-        setLoginname(localStorage.getItem('loginname'))
-        navigate('/profile')
-      }else{
-        setMessage(data.message)
-      }
+      body: JSON.stringify(data),
     })
+      .then((result) => {
+        return result.json();
+      })
+      .then((data) => {
+        // console.log(data)
+        if (data.status === 200 && data.email === "admin@gmail.com") {
+          localStorage.setItem("loginname", data.email);
+          setLoginname(localStorage.getItem("loginname"));
+          navigate("/dashboard");
+        } else if (data.status === 200 && data.email !== "admin") {
+          localStorage.setItem("loginname", data.email);
+          setLoginname(localStorage.getItem("loginname"));
+          navigate("/profile");
+        } else {
+          setMessage(data.message);
+        }
+      });
   }
 
   return (
@@ -43,8 +47,6 @@ function Login() {
         </div>
         <div className="site-mobile-menu-body" />
       </div>
-
-
       <div
         className="untree_co-hero inner-page overlay"
         style={{ backgroundImage: 'url("images/explore-1.png")' }}
@@ -79,12 +81,16 @@ function Login() {
               data-aos="fade-up"
               data-aos-delay={200}
             >
-              <form 
-              onSubmit={(e) => { handleForm(e) }}
-                action="#" className="form-box">
+              <form
+                onSubmit={(e) => {
+                  handleForm(e);
+                }}
+                action="#"
+                className="form-box"
+              >
                 <div className="row">
-                <div className='col-12 mb-2 text-center text-danger'>
-                  <p >{message}</p>
+                  <div className="col-12 mb-2 text-center text-danger">
+                    <p>{message}</p>
                   </div>
                   <div className="col-12 mb-3">
                     <input
@@ -92,7 +98,9 @@ function Login() {
                       className="form-control"
                       placeholder="Email"
                       value={email}
-                      onChange={(e) => { setEmail(e.target.value) }}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="col-12 mb-3">
@@ -101,7 +109,9 @@ function Login() {
                       className="form-control"
                       placeholder="Password"
                       value={password}
-                      onChange={(e) => { setPassword(e.target.value) }}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="col-12 mb-3">
@@ -125,8 +135,6 @@ function Login() {
         </div>
       </div>{" "}
       {/* /.untree_co-section */}
-
-
       {/* /.site-footer */}
       {/* <div id="overlayer" />
   <div className="loader">
@@ -135,7 +143,6 @@ function Login() {
     </div>
   </div> */}
     </>
-
   );
 }
 
