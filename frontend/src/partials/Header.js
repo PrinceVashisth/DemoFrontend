@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Logo from "../images/logo-removebg.png";
 import "./Header.css";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { FaSignOutAlt } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
-  const isAuthenticated = true;
 
-  const userDetails = {
-    name: "Harsh yadav",
-    email: "Yaduvansi524@gmail.com",
-  };
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <section className="header mb-3">
@@ -22,29 +23,23 @@ function Header() {
               </a>
             </li>
           </ul>
-          {/* <ul className="nav social-icons d-none d-md-block">
+          <ul className="nav social-icons d-none d-md-block">
             <li className="nav-item">
-              <a
-                href="https://www.facebook.com/profile.php?id=61555291071635"
-                className="nav-link link-dark"
-              >
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-facebook"></i>
               </a>
             </li>
             <li className="nav-item">
-              <a
-                href="https://www.instagram.com/eiko.patisserie/"
-                className="nav-link link-dark"
-              >
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-instagram"></i>
               </a>
             </li>
             <li className="nav-item">
-              <a href="https://wa.me/9643280404" className="nav-link link-dark">
+              <a href="#" className="nav-link link-dark">
                 <i className="bi bi-whatsapp"></i>
               </a>
             </li>
-          </ul> */}
+          </ul>
         </div>
       </nav>
       <header className="border-bottom">
@@ -62,38 +57,59 @@ function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
             <Link className="navbar-brand" to="/">
-              <img src="./images/goldcroplogo.svg" alt="" />
+              <img
+                src={Logo}
+                alt=""
+                style={{ maxWidth: "150px", height: "auto" }}
+              />
             </Link>
             <div className="d-flex header-icons d-lg-none align-items-center">
               <Link to="/cart">
                 <i className="bi bi-bag-heart"></i>
               </Link>
-
               {isAuthenticated ? (
                 <div class="dropdown">
                   <button class="dropdown-btn">
                     <i className="bi bi-person"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <div>
-                      <div>
-                        <strong>Name : </strong>
-                        <span>{userDetails.name}</span>
-                      </div>
-                      <div>
-                        <strong>Email : </strong>
-                        <span>{userDetails.email}</span>
+                    <div className="p-2 d-flex align-items-center">
+                      <MdOutlineAccountCircle
+                        size={50}
+                        className="user-info-img "
+                      />
+
+                      <div className="p-1 strong">
+                        <strong>{user.name}</strong>
                       </div>
                     </div>
-                    <hr></hr>
-                    <Link to="/profile">Account</Link>
-                    <Link>Log Out</Link>
+                    <hr className="hr-dark mb-1 mx-1 color-app" />
+                    <Link
+                      to="/user/profile"
+                      className="d-flex align-items-center"
+                    >
+                      <div className="mx-1">
+                        <IoMdSettings />
+                      </div>
+                      Account
+                    </Link>
+                    <Link className="d-flex align-items-center">
+                      <div className="mx-1">
+                        <FaSignOutAlt />
+                      </div>
+                      Sign out
+                    </Link>
                   </div>
                 </div>
               ) : (
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
+                // <Link to="/user/profile">
+                //   <i className="bi bi-person"></i>
+                // </Link>
+                <div className="d-flex align-items-center ">
+                  <Link className="color-white" to="/user/login">
+                    Login or SignUp{" "}
+                  </Link>
+                </div>
               )}
             </div>
             <div className="collapse navbar-collapse" id="navbarScroll">
@@ -107,12 +123,12 @@ function Header() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" to="/">
+                  <a className="nav-link" to="/products?category=food">
                     Food
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/products">
+                  <Link className="nav-link" to="/products?category=cakes">
                     Cakes
                   </Link>
                 </li>
@@ -144,25 +160,40 @@ function Header() {
                       <i className="bi bi-person"></i>
                     </button>
                     <div class="dropdown-menu">
-                      <div>
-                        <div>
-                          <strong>Name : </strong>
-                          <span>{userDetails.name}</span>
-                        </div>
-                        <div>
-                          <strong>Email : </strong>
-                          <span>{userDetails.email}</span>
+                      <div className="p-2 d-flex align-items-center">
+                        <MdOutlineAccountCircle
+                          size={50}
+                          className="user-info-img "
+                        />
+
+                        <div className="p-1 strong">
+                          <strong>{user.name}</strong>
                         </div>
                       </div>
-                      <hr></hr>
-                      <Link to="/profile">Account</Link>
-                      <Link>Log Out</Link>
+                      <hr className="hr-dark mb-1 mx-1 color-app" />
+                      <Link
+                        to="/user/profile"
+                        className="d-flex align-items-center"
+                      >
+                        <div className="mx-1">
+                          <IoMdSettings />
+                        </div>
+                        Account
+                      </Link>
+                      <Link className="d-flex align-items-center">
+                        <div className="mx-1">
+                          <FaSignOutAlt />
+                        </div>
+                        Sign out
+                      </Link>
                     </div>
                   </div>
                 ) : (
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
+                  <div className="d-flex align-items-center color-white">
+                    <Link className="color-white" to="/user/login">
+                      Login or SignUp{" "}
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>

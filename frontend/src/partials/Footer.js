@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
+import Logo from "../images/logo.png";
 
 function Footer() {
   const [showModal, setShowModal] = useState(false);
@@ -22,9 +23,9 @@ function Footer() {
       <section id="footer">
         <div className="container">
           <div className="row">
-            <div className="col-md-2 mb-5 m-md-0">
+            <div className="col-md-3 mb-5 m-md-0">
               <img
-                src="./images/goldcroplogo.svg"
+                src={Logo}
                 alt="Footer Logo"
                 className="img-fluid"
                 style={{ maxWidth: "100px" }}
@@ -46,7 +47,7 @@ function Footer() {
                   </div>
                   <div className="col-4">
                     <li className="list-inline-item">
-                      <Link to="/">Terms & Conditions</Link>
+                      <Link to="/terms-and-conditions">Terms & Conditions</Link>
                     </li>
                   </div>
                 </div>
@@ -58,7 +59,7 @@ function Footer() {
                   </div>
                   <div className="col-4">
                     <li className="list-inline-item">
-                      <Link to="/">Our Locations</Link>
+                      <Link to="/about">Our Locations</Link>
                     </li>
                   </div>
                   <div className="col-4">
