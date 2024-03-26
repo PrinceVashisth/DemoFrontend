@@ -62,18 +62,11 @@ router.get('/user/profile', (req, res) => {
       user: user
   });
 });
-router.route("/order/new").post(isAuthenticated, orderController.newOrder);
-
-router.route("/order/:id").get(isAuthenticated, orderController.getSingleProduct);
-
-router.route("/orders/me").get(isAuthenticated, orderController.myOrder);
-
-router
-  .route("/admin/order")
-  .get(isAuthenticated, authorizeRoles("admin"), orderController.getAllOrder);
-
-router
-  .route("/admin/order/:id")
+router.post("/order/new", isAuthenticated, orderController.newOrder);
+router.get("/order/:id", isAuthenticated, orderController.getSingleProduct);
+router.get("/orders/me", isAuthenticated, orderController.myOrder);
+router.get("/admin/order", isAuthenticated, authorizeRoles("admin"), orderController.getAllOrder);
+router.route("/admin/order/:id")
   .put(isAuthenticated, authorizeRoles("admin"), orderController.updateOrder)
   .delete(isAuthenticated, authorizeRoles("admin"), orderController.deleteOrder);
 

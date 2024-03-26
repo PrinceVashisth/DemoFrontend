@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
     },
     phoneNo: {
       type: Number,
-      unique: [true, "Phone number already exists"],
+      unique: true,
       match: /^\d{10}$/,
       required: [true, " enter a valid Phone No"],
     },
@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema({
       },
       image: {
         type: String,
-        required:true,
+
       },
       product: {
         type: mongoose.Schema.ObjectId,
