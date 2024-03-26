@@ -1,8 +1,9 @@
 const Order = require("../models/order");
 const Product = require("../models/products");
 const User = require("../models/reg");
-const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHander = require("../utils/errorhander");
+const catchAsyncError = require('../Middleware/catchAsyncError');
+const ErrorHandler = require("../utils/errorhandler");
+
 
 //creating order details
 exports.newOrder = catchAsyncError(async (req, res, next) => {
@@ -42,7 +43,7 @@ exports.getSingleProduct = catchAsyncError(async (req, res, next) => {
   );
 
   if (!order) {
-    return next(new ErrorHander("Product not found with this Id"), 404);
+    return next(new ErrorHandler("Product not found with this Id"), 404);
   }
   console.log(req.user._id);
 

@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const catchAsyncError = require("../middleware/catchAsyncError");
+
 const ErrorHandler = require("../utils/errorhander");
 const Reg = require("../models/reg");
+
 const crypto = require("crypto");
 const sendToken = require("../utils/jwtTokens");
 
@@ -53,6 +55,7 @@ exports.logincheck = catchAsyncError(async (req, res, next) => {
   req.session.user = user;
 
   // Send success response
+
   res.status(200).json({
     status: 200,
     message: "Login successful",
@@ -66,6 +69,13 @@ exports.userLogOut = catchAsyncError(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
+
+  res.status(200).json({
+    success: true,
+    data: "Logged out successfully",
+
+  });
+});
 
   res.status(200).json({
     success: true,

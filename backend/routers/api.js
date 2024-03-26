@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const regc = require('../controllers/regController');
 const productController = require('../controllers/productController');
 const categoryController = require('../controllers/categoryController');
@@ -23,6 +24,8 @@ const upload = multer({
     fileSize: 15 * 1024 * 1024, // 5 MB limit per file
   },
 });
+
+router.use(cookieParser());
 
 router.use(bodyParser.json()); 
 router.use(bodyParser.urlencoded({ extended: true })); 
@@ -59,18 +62,11 @@ router.get('/user/profile', (req, res) => {
       user: user
   });
 });
-router.route("/order/new").post(isAuthenticated, orderController.newOrder);
-
-router.route("/order/:id").get(isAuthenticated, orderController.getSingleProduct);
-
-router.route("/orders/me").get(isAuthenticated, orderController.myOrder);
-
-router
-  .route("/admin/order")
-  .get(isAuthenticated, authorizeRoles("admin"), orderController.getAllOrder);
-
-router
-  .route("/admin/order/:id")
+router.post("/order/new", isAuthenticated, orderController.newOrder);
+router.get("/order/:id", isAuthenticated, orderController.getSingleProduct);
+router.get("/orders/me", isAuthenticated, orderController.myOrder);
+router.get("/admin/order", isAuthenticated, authorizeRoles("admin"), orderController.getAllOrder);
+router.route("/admin/order/:id")
   .put(isAuthenticated, authorizeRoles("admin"), orderController.updateOrder)
   .delete(isAuthenticated, authorizeRoles("admin"), orderController.deleteOrder);
 
