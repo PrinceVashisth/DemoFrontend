@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-const bcrypt = require('bcrypt')
-const catchAsyncError = require("../Middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorHandler");
-const Reg = require('../models/reg')
-=======
 const bcrypt = require("bcrypt");
 const catchAsyncError = require("../middleware/catchAsyncError");
 
-const ErrorHandler = require("../utils/errorhander");
+const ErrorHandler = require("../utils/errorHandler");
 const Reg = require("../models/reg");
 
->>>>>>> 359d833fd7d27fd5d4ca176b5abeda7d9d2877e6
 const crypto = require("crypto");
 const sendToken = require("../utils/jwtTokens");
 
@@ -77,7 +70,7 @@ exports.userLogOut = catchAsyncError(async (req, res, next) => {
     data: "Logged out successfully",
 
   });
-});
+
 
   res.status(200).json({
     success: true,
