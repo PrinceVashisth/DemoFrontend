@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const catchAsyncError = require("../middleware/catchAsyncError");
+const catchAsyncError = require("../Middleware/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const Reg = require('../models/reg')
 const crypto = require("crypto");
@@ -15,19 +15,14 @@ exports.register = catchAsyncError(async (req, res, next) => {
   // });
   console.log('here is req data:', req.body)
 
-  const { name, email, password } = req.body;
+  const { name, email, password, phoneNo } = req.body;
 
 
   const user = await Reg.create({
     name,
     email,
     password,
-    avatar: {
-      // public_id: myCloud.public_id,
-      // url: myCloud.secure_url,
-      public_id: "id",
-      url: "url",
-    },
+    phoneNo
   });
 
   console.log("created user", user);

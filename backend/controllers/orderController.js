@@ -1,11 +1,7 @@
 const Order = require("../models/order");
-const Product = require("../models/products");
-const User = require("../models/reg");
-const catchAsyncError = require('../Middleware/catchAsyncError');
-const ErrorHandler = require("../utils/errorhandler");
+const catchAsyncError = require("../Middleware/catchAsyncError");
+const ErrorHandler = require("../utils/errorHandler");
 
-
-//creating order details
 exports.newOrder = catchAsyncError(async (req, res, next) => {
   const {
     shippingInfo,
@@ -17,22 +13,34 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     totalPrice,
   } = req.body;
 
-  const order = await Order.create({
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-    paidAt: Date.now(),
-    user: req.user._id, // here i am getting req.user._id but in getMyOrders i get nothing
-  });
+  try {
+    const order = await Order.create({
+      shippingInfo,
+      orderItems,
+      paymentInfo,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      paidAt: Date.now(),
+      user: req.user._id,
+    });
 
-  res.status(201).json({
-    status: true,
-    order,
-  });
+    res.status(201).json({
+      status: true,
+      order,
+    });
+  } catch (error) {
+    if (error.name === "MongoServerError" && error.code === 11000) {
+      // Duplicate key error
+      return next(
+        new ErrorHandler("Phone number already exists in another order", 400)
+      );
+    } else {
+      // Other errors
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
 });
 
 // get single product -- admin
@@ -80,31 +88,38 @@ exports.getAllOrder = catchAsyncError(async (req, res, next) => {
 
 //update Order status,stock,quantity -- admin
 exports.updateOrder = catchAsyncError(async (req, res, next) => {
-  const orders = await Order.findById(req.params.id);
+  const orderId = req.params.id;
+  const newStatus = req.body.status;
 
-  if (!orders) {
-    return next(new ErrorHander("Order doesn't exist with this Id"), 404);
+  // Check if the order exists
+  const order = await Order.findById(orderId);
+  if (!order) {
+    return next(new ErrorHandler("Order not found with this Id", 404));
   }
 
-  if (orders.orderStatus == "Delivered") {
-    return next(new ErrorHander("You have Already Delivered this order"), 400);
+  // Check if the new status is "Delivered" and the order has already been delivered
+  if (newStatus === "Delivered" && order.orderStatus === "Delivered") {
+    return next(new ErrorHandler("This order has already been delivered", 400));
   }
 
-  orders.orderItems.forEach(async (ord) => {
-    await updateStock(ord.product, ord.quantity);
-  });
+  // Update the order status
+  order.orderStatus = newStatus;
 
-  orders.orderStatus = req.body.status;
-
-  if (req.body.status == "Delivered") {
-    orders.deliveredAt = Date.now();
+  // If the new status is "Delivered", update deliveredAt timestamp
+  if (newStatus === "Delivered") {
+    order.deliveredAt = Date.now();
   }
 
-  await orders.save({ validateBeforeSave: false });
-  res.status(201).json({
+  // Save the updated order
+  await order.save();
+
+  // Send response
+  res.status(200).json({
     status: true,
+    message: "Order status updated successfully",
   });
 });
+
 
 //function for updatin the stock
 async function updateStock(id, qty) {

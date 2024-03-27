@@ -20,8 +20,7 @@ const orderSchema = new mongoose.Schema({
       minLength: [6, "cannot exceed more than 6 characters"],
     },
     phoneNo: {
-      type: Number,
-      unique: true,
+      type: String,
       match: /^\d{10}$/,
       required: [true, " enter a valid Phone No"],
     },
@@ -108,5 +107,7 @@ const orderSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+orderSchema.index({ user: 1, 'shippingInfo.phoneNo': 1 }, { unique: true });
 
 module.exports = mongoose.model("Order", orderSchema);
