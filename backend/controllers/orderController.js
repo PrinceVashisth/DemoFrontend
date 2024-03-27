@@ -11,6 +11,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    user
   } = req.body;
 
   try {
@@ -23,7 +24,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
       shippingPrice,
       totalPrice,
       paidAt: Date.now(),
-      user: req.user._id,
+      user: user
     });
 
     res.status(201).json({
@@ -31,6 +32,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
       order,
     });
   } catch (error) {
+
     if (error.name === "MongoServerError" && error.code === 11000) {
       // Duplicate key error
       return next(

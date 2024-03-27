@@ -108,6 +108,6 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-orderSchema.index({ user: 1, 'shippingInfo.phoneNo': 1 }, { unique: true });
+//orderSchema.index({ user: 1, 'shippingInfo.phoneNo': 1 }, { unique: true });
 
 module.exports = mongoose.model("Order", orderSchema);

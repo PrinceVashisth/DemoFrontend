@@ -1,26 +1,24 @@
 import React, { useState } from "react";
 import { Typography } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
 import "./ConfirmOrder.css";
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 import axios from "axios";
+import {APP_ADDRESS, APP_DESC, APP_LOGO, APP_NAME, RAZORPAY_KEY_ID} from "../../constants/ServerConstant";
+import {removeAllItemsFromCart} from "../../actions/CartAction";
 
 const ConfirmOrders = () => {
+  const dispatch = useDispatch();
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.user);
-  const [paymentMode, setPaymentMode] = useState("Cash");
-  console.log(shippingInfo);
+  // const [paymentMode, setPaymentMode] = useState("Cash");
   const generatePaymentId = () => {
     const timestamp = new Date().getTime();
     const randomString = Math.random().toString(36).substr(2, 5);
-    return `payment-${timestamp}-${randomString}`;
-  };
-
-  const handlePaymentModeChange = (event) => {
-    setPaymentMode(event.target.value);
+    return `receipt_order_${timestamp}-${randomString}`;
   };
 
   const navigate = useNavigate();
@@ -59,8 +57,82 @@ const ConfirmOrders = () => {
   const totalPrice = subtotal + tax + shippingCharges;
   const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
 
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
   const proceedToPayment = async () => {
-    console.log(user, isAuthenticated);
+    const requestBody = {
+      "amount": totalPrice,
+      "receipt": generatePaymentId()
+    }
+    const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+    );
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return false;
+    }
+    //initiate payment order
+    const result = await axios.post(`/api/payment/initiate`, requestBody);
+
+    if (!result) {
+      alert("Server error. Are you online?");
+      return false;
+    }
+    const { amount, id: order_id, currency } = result.data;
+
+    const options = {
+      key: RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+      amount: amount.toString(),
+      currency: currency,
+      name: APP_NAME,
+      description: APP_DESC,
+      image: APP_LOGO,
+      order_id: order_id,
+      handler: async function (response) {
+        const data = {
+          orderCreationId: order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+        };
+
+        const result = await axios.post(`/api/payment/success`, data);
+
+        if(result.data.msg === "success"){
+           placeOrder(requestBody.receipt);
+        }else{
+          alert("try again");
+        }
+      },
+      prefill: {
+        name: user.name,
+        email: user.email,
+        contact: shippingInfo.phoneNo,
+      },
+      notes: {
+        address: APP_ADDRESS,
+      },
+      theme: {
+        color: "#9E2A53",
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
+  const placeOrder = async (receipt) => {
 
     const data = {
       subtotal,
@@ -75,9 +147,9 @@ const ConfirmOrders = () => {
       newOrder.shippingInfo.pincode = parseInt(shippingInfo.pinCode);
       newOrder.orderItems = cartItems;
       newOrder.user = user._id;
-      newOrder.paymentInfo.mode = paymentMode;
-      newOrder.paymentInfo.id = generatePaymentId();
-      newOrder.paymentInfo.status = "pending";
+      newOrder.paymentInfo.mode = "Online";
+      newOrder.paymentInfo.id = receipt;
+      newOrder.paymentInfo.status = "paid";
       newOrder.itemsPrice = subtotal;
       newOrder.taxPrice = tax;
       newOrder.shippingPrice = shippingCharges;
@@ -92,7 +164,7 @@ const ConfirmOrders = () => {
 
       if (data.status === true) {
         //Todo: empty the cart items
-        sessionStorage.removeItem("orderInfo");
+        dispatch(removeAllItemsFromCart());
         //todo: navigate to the specific page accrodingly as of now redirecting to products page
         navigate("/products");
       } else {
@@ -172,7 +244,7 @@ const ConfirmOrders = () => {
               </p>
               <span>₹{totalPrice}</span>
             </div>
-            <div className="orderSummaryTotal">
+            {/*<div className="orderSummaryTotal">
               <p>
                 <b>Payment Mode:</b>
               </p>
@@ -194,7 +266,7 @@ const ConfirmOrders = () => {
                   onChange={handlePaymentModeChange} // Call handler when 'online' is selected
                 />
               </span>
-            </div>
+            </div>*/}
 
             <button onClick={proceedToPayment}>Proceed To Payment</button>
           </div>
