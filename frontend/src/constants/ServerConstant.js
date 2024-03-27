@@ -1,4 +1,4 @@
-export const SERVER_URL = "http://localhost:5999";
+export const SERVER_URL = "http://localhost:5000";
 export const RAZORPAY_KEY_ID = "rzp_test_cObH46VhvkWo3x";
 export const APP_NAME = "EIKO APP";
 export const APP_DESC = "EIKO APP DESCRIPTION";
