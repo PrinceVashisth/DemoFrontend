@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Mainpage from "./components/Mainpage";
 import Products from "./components/Products";
-import Login from "./components/admin/Login";
+// import Login from "./components/admin/Login";
 import Register from "./components/admin/Register";
 import Admindash from "./components/admin/AdminDash";
 import ProductDash from "./components/admin/ProductDash";

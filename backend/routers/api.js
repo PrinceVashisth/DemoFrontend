@@ -48,6 +48,7 @@ router.use(upload.array());
 
 router.post('/reg', regc.register);
 router.post('/logincheck', regc.logincheck);
+router.get('/logout', regc.userLogOut);
 router.get('/products', productController.getAllProducts);
 router.get('/product/:id', productController.getProductDetails);
 router.post('/products', upload.single('image'), productController.addProduct);

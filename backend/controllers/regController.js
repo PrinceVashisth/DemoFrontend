@@ -61,18 +61,22 @@ exports.logincheck = catchAsyncError(async (req, res, next) => {
 
 
 
+
 //LOGOUT--------
 exports.userLogOut = catchAsyncError(async (req, res, next) => {
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-  });
-
-  res.status(200).json({
-    success: true,
-    data: "Logged out successfully",
-  });
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ success: false, error: 'Logout failed' });
+      }
+      res.clearCookie('connect.sid'); // Clear the session cookie
+      res.redirect('/'); // Redirect to the home page after logout
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Logout failed", 500));
+  }
 });
+
 
 // exports.register = async (req, res) => {
 //     try {

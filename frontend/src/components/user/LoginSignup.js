@@ -90,9 +90,13 @@ const LoginSignup = () => {
     }
 
     if (isAuthenticated) {
-      navigate("/products");
+      if (loginEmail === "admin@eiko.com") {
+        navigate("/dashboard");
+      } else {
+        navigate("/products");
+      }
     }
-  }, [dispatch, error, alert, isAuthenticated, navigate]);
+  }, [dispatch, error, alert, isAuthenticated, navigate, loginEmail]);
 
   const switchTab = (e, tab) => {
     if (tab === "login") {

@@ -52,6 +52,19 @@ import {
       });
     }
   };
+
+  // LOGOUT USER
+export const logout = () => async (dispatch) => {
+  try {
+    await axios.get("/api/logout");
+    dispatch({ type: LOGOUT_USER_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: LOGOUT_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
   
   export const clearError = () => async (dispatch) => {
     dispatch({ type: CLEAR_ERRORS });

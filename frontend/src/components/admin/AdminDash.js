@@ -4,6 +4,7 @@ import Left from "./partials/Left"
 function Admindash() {
     return (
         <>
+        
         <Header/>
         <section className="dash">
             <div className="container"> 

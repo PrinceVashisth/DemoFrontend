@@ -1,16 +1,23 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "../images/logo-removebg.png";
 import "./Header.css";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
+import { logout } from "../actions/UserAction";
+
 
 function Header() {
-  const { cartItems } = useSelector((state) => state.cart);
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
 
   return (
     <section className="header mb-3">
@@ -93,12 +100,12 @@ function Header() {
                       </div>
                       Account
                     </Link>
-                    <Link className="d-flex align-items-center">
+                    <button onClick={handleLogout} className="d-flex align-items-center">
                       <div className="mx-1">
                         <FaSignOutAlt />
                       </div>
                       Sign out
-                    </Link>
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -180,12 +187,12 @@ function Header() {
                         </div>
                         Account
                       </Link>
-                      <Link className="d-flex align-items-center">
-                        <div className="mx-1">
-                          <FaSignOutAlt />
-                        </div>
-                        Sign out
-                      </Link>
+                      <button onClick={handleLogout} className="d-flex align-items-center">
+                      <div className="mx-1">
+                        <FaSignOutAlt />
+                      </div>
+                      Sign out
+                    </button>
                     </div>
                   </div>
                 ) : (
