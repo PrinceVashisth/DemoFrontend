@@ -7,7 +7,7 @@ import { login, clearError, register } from "../../actions/UserAction";
 import { useAlert } from "react-alert";
 // import Loader from "../layout/Loader/Loader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FormData } from "formdata-node";
+// import { FormData } from "formdata-node";
 
 const LoginSignup = () => {
   const navigate = useNavigate();
@@ -38,7 +38,6 @@ const LoginSignup = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [emailError, setEmailError] = useState("");
 
-  
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
@@ -48,19 +47,19 @@ const LoginSignup = () => {
     e.preventDefault();
 
     // Check if password and confirm password match
-  if (password !== repassword) {
-    alert.error("Passwords do not match");
-    return; // Stop further execution
-  }
-  if (email === "existing@example.com") {
-    setEmailError("Email already exists");
-    return; // Stop further execution
-  }
+    if (password !== repassword) {
+      alert.error("Passwords do not match");
+      return; // Stop further execution
+    }
+    if (email === "existing@example.com") {
+      setEmailError("Email already exists");
+      return; // Stop further execution
+    }
 
     const myForm = new FormData();
-    myForm.set("name",name);
-    myForm.set("email",email);
-    myForm.set("password",password);
+    myForm.set("name", name);
+    myForm.set("email", email);
+    myForm.set("password", password);
     console.log(myForm);
 
     dispatch(register(user));
@@ -76,11 +75,10 @@ const LoginSignup = () => {
     if (name === "repassword") {
       setPasswordMatch(value === password); // Update password match state
     }
-   
+
     if (name === "email") {
       setEmailError(""); // Reset email error when input changes
     }
-
   };
 
   // const redirect = location.search ? location.search.split("=")[1] : "/account";
