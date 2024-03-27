@@ -1,10 +1,11 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorHandler");
-const Reg = require('../models/reg')
+
+const ErrorHandler = require("../utils/errorhander");
+const Reg = require("../models/reg");
+
 const crypto = require("crypto");
 const sendToken = require("../utils/jwtTokens");
-
 
 //REGESTERING USER---------
 exports.register = catchAsyncError(async (req, res, next) => {
@@ -13,10 +14,9 @@ exports.register = catchAsyncError(async (req, res, next) => {
   //   width: 150,
   //   crop: "scale",
   // });
-  console.log('here is req data:', req.body)
+  console.log("here is req data:", req.body);
 
   const { name, email, password } = req.body;
-
 
   const user = await Reg.create({
     name,
@@ -55,16 +55,13 @@ exports.logincheck = catchAsyncError(async (req, res, next) => {
   req.session.user = user;
 
   // Send success response
-  // res.status(200).json({
-  //   status: 200,
-  //   message: "Login successful",
-  //   user: user // Optionally, you can send user data in the response
-  // });
-  sendToken(user, 200, res);
+
+  res.status(200).json({
+    status: 200,
+    message: "Login successful",
+    user: user, // Optionally, you can send user data in the response
+  });
 });
-
-
-
 
 //LOGOUT--------
 exports.userLogOut = catchAsyncError(async (req, res, next) => {
@@ -72,6 +69,13 @@ exports.userLogOut = catchAsyncError(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
+
+  res.status(200).json({
+    success: true,
+    data: "Logged out successfully",
+
+  });
+});
 
   res.status(200).json({
     success: true,
@@ -115,7 +119,7 @@ exports.userLogOut = catchAsyncError(async (req, res, next) => {
 //             let compare = await bcrypt.compare(password, record.password)
 //             if (compare) {
 //                 res.json({
-//                     status: 200,    
+//                     status: 200,
 //                     email: record.email
 //                 })
 //             } else {
