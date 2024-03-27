@@ -6,6 +6,7 @@ const regc = require('../controllers/regController');
 const productController = require('../controllers/productController');
 const categoryController = require('../controllers/categoryController');
 const orderController = require('../controllers/orderController');
+const paymentController = require('../controllers/paymentController')
 const { isAuthenticated, authorizeRoles } = require('../Middleware/Auth');
 
 
@@ -70,5 +71,7 @@ router.route("/admin/order/:id")
   .put(isAuthenticated, authorizeRoles("admin"), orderController.updateOrder)
   .delete(isAuthenticated, authorizeRoles("admin"), orderController.deleteOrder);
 
+router.post("/payment/initiate", isAuthenticated, paymentController.initiate);
+router.post("/payment/success", isAuthenticated, paymentController.success);
 
 module.exports = router;
