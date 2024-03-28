@@ -13,7 +13,7 @@ exports.register = catchAsyncError(async (req, res, next) => {
   //   width: 150,
   //   crop: "scale",
   // });
-  console.log('here is req data:', req.body)
+  // console.log('here is req data:', req.body)
 
   const { name, email, password, phoneNo } = req.body;
 
@@ -49,12 +49,7 @@ exports.logincheck = catchAsyncError(async (req, res, next) => {
   // Start session and store user data
   req.session.user = user;
 
-  // Send success response
-  // res.status(200).json({
-  //   status: 200,
-  //   message: "Login successful",
-  //   user: user // Optionally, you can send user data in the response
-  // });
+
   sendToken(user, 200, res);
 });
 

@@ -165,7 +165,7 @@ const Products = () => {
               <i className="bi bi-arrow-up"></i>
             </button>
           )}
-          {/* <Header /> */}
+          <Header />
 
           <div className="productcontainer">
             <div className="container">

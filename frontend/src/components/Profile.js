@@ -1,49 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  MdNoAccounts,
-  MdOutlineAccountCircle,
-  MdOutlineSearch,
-} from "react-icons/md";
-import SERVER_URL from "../constants/ServerConstant";
+import { MdNoAccounts, MdOutlineAccountCircle, MdOutlineSearch } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import Header from "../partials/Header";
 
 const Profile = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const orderDetails = [
-    // {
-    //   name: "Barbeque Barbeque Barbeque",
-    //   image: "images/catogery/cat6.png",
-    //   _id: "12",
-    // },
-  ];
+  const orderDetails = []; // Your order details array
 
   useEffect(() => {
     console.log(user);
-  });
+  }, [user]);
 
-  const userDetails = {
-    name: "Harsh yadav",
-    email: "yaduvansi524@gmail.com",
-  };
+
 
   return (
     <div>
       {isAuthenticated ? (
         <>
+          <Header />
           <div className="container">
             <h1>Account</h1>
             <div className="user-info">
               <MdOutlineAccountCircle size={100} className="user-info-img" />
               <div className="user-info-details">
                 <div>
-                  <strong>Name : </strong> <span>{userDetails.name}</span>
+                  <strong>Name : </strong> <span>{user.name}</span>
                 </div>
                 <div>
-                  <strong>Email : </strong> <span>{userDetails.email}</span>
+                  <strong>Email : </strong> <span>{user.email}</span>
                 </div>
               </div>
             </div>
@@ -88,7 +74,7 @@ const Profile = () => {
           <div className="d-flex justify-content-center pt-5 flex-column align-items-center ">
             <MdNoAccounts size={100} />
             <h2>Not Logged In </h2>
-            <Link to="/login" className="py-5">
+            <Link to="/user/login" className="py-5">
               <div className="buy-now-button w-100">Sign In</div>
             </Link>
           </div>

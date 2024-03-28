@@ -1,8 +1,10 @@
 import React from "react";
+import Header from "../partials/Header";
 
 const Terms = () => {
   return (
     <div>
+      <Header/>
       {" "}
       {/* <animated.div style={aboutProps}> */}
       <section id="about" className="bg-white padding-one-bottom m-md-5 m-3">

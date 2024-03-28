@@ -146,7 +146,7 @@ const ConfirmOrders = () => {
       newOrder.shippingInfo = shippingInfo;
       newOrder.shippingInfo.pincode = parseInt(shippingInfo.pinCode);
       newOrder.orderItems = cartItems;
-      newOrder.user = user._id;
+      newOrder.user = user;
       newOrder.paymentInfo.mode = "Online";
       newOrder.paymentInfo.id = receipt;
       newOrder.paymentInfo.status = "paid";

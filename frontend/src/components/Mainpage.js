@@ -64,7 +64,7 @@ const Mainpage = () => {
             </button>
           )}
           {/* Header start */}
-          {/* <Header /> */}
+          <Header />
           {/* Header End */}
 
           {/* Catogery section start */}

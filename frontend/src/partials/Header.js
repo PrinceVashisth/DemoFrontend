@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "../images/logo-removebg.png";
 import "./Header.css";
@@ -11,11 +12,14 @@ import { logout } from "../actions/UserAction";
 function Header() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/');
+
   };
 
 
@@ -77,7 +81,8 @@ function Header() {
               {isAuthenticated ? (
                 <div class="dropdown">
                   <button class="dropdown-btn">
-                    <i className="bi bi-person"></i>
+                    <MdOutlineAccountCircle />
+                    {user.name}
                   </button>
                   <div class="dropdown-menu">
                     <div className="p-2 d-flex align-items-center">
@@ -164,36 +169,23 @@ function Header() {
                 {isAuthenticated ? (
                   <div class="dropdown">
                     <button class="dropdown-btn">
-                      <i className="bi bi-person"></i>
+                      {user.name}
                     </button>
-                    <div class="dropdown-menu">
-                      <div className="p-2 d-flex align-items-center">
-                        <MdOutlineAccountCircle
-                          size={50}
-                          className="user-info-img "
-                        />
-
-                        <div className="p-1 strong">
-                          <strong>{user.name}</strong>
-                        </div>
-                      </div>
-                      <hr className="hr-dark mb-1 mx-1 color-app" />
-                      <Link
-                        to="/user/profile"
-                        className="d-flex align-items-center"
-                      >
+                    <div className="dropdown-menu dropdown-menu-end">
+                      <Link to="/user/profile" className="dropdown-item d-flex align-items-center">
                         <div className="mx-1">
                           <IoMdSettings />
                         </div>
                         Account
                       </Link>
-                      <button onClick={handleLogout} className="d-flex align-items-center">
-                      <div className="mx-1">
-                        <FaSignOutAlt />
-                      </div>
-                      Sign out
-                    </button>
+                      <button onClick={handleLogout} className="dropdown-item d-flex align-items-center">
+                        <div className="mx-1">
+                          <FaSignOutAlt />
+                        </div>
+                        Sign out
+                      </button>
                     </div>
+
                   </div>
                 ) : (
                   <div className="d-flex align-items-center color-white">

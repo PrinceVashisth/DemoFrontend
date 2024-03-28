@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Mainpage from "./components/Mainpage";
@@ -17,28 +18,40 @@ import Profile from "./components/Profile.js";
 import LoginSignup from "./components/user/LoginSignup";
 import About from "./components/About.js";
 import Terms from "./components/Terms.js";
+import AuthRoute from "./AuthRoute.js"
+import OrderDash from "./components/admin/OrderDash.js";
+
 
 function App() {
+
+
+
+
   return (
     <BrowserRouter>
-      <Header />
       <Routes id="main-container">
+        
         <Route path="/" element={<Mainpage />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Admindash />} />
-        <Route path="/productdash" element={<ProductDash />} />
-        <Route path="/categorydash" element={<CategoryDash />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/orders/confirm" element={<ConfirmOrders />} />
-
         <Route path="/user/login" element={<LoginSignup />} />
         <Route path="/user/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
+
+
+        <Route path="/dashboard" element={<Admindash />} />
+        <Route path="/productdash" element={<ProductDash />} />
+        <Route path="/categorydash" element={<CategoryDash />} />
+        <Route path="/orderdash" element={<OrderDash />} />
+
+
+
       </Routes>
       <Footer />
     </BrowserRouter>

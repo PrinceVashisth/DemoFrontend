@@ -1,6 +1,8 @@
 const Order = require("../models/order");
 const catchAsyncError = require("../Middleware/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
+const User = require("../models/reg"); 
+
 
 exports.newOrder = catchAsyncError(async (req, res, next) => {
   const {
@@ -15,6 +17,13 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
   } = req.body;
 
   try {
+
+    const userData = await User.findById(user);
+    console.log('yha user data db mein save ho rha h', userData)
+        if (!userData) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+
     const order = await Order.create({
       shippingInfo,
       orderItems,
@@ -24,8 +33,10 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
       shippingPrice,
       totalPrice,
       paidAt: Date.now(),
-      user: user
+      user: userData
     });
+console.log('yha complete order details', order)
+
 
     res.status(201).json({
       status: true,

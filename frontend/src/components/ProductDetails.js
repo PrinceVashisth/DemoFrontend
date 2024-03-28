@@ -131,6 +131,7 @@ const ProductDetail = () => {
               <i className="bi bi-arrow-up"></i>
             </button>
           )}
+          <Header />
           <section className="container flex-grow mx-auto max-w-[1200px] border-b py-5 lg:grid lg:grid-cols-2 lg:py-10">
             {/* image gallery */}
             <div className="row">

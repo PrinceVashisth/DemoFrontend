@@ -34,14 +34,17 @@ const regSchema = new mongoose.Schema({
   },
   avatar: {
     public_id: {
-      type: String,
-      required: true,
+        type: String,
+        required: false,
+        default: null
     },
     url: {
-      type: String,
-      required: true,
+        type: String,
+        required: false, // Change to false
+        default: null // Set default value to null
     },
-  },
+},
+
   role: {
     type: String,
     default: "user",
