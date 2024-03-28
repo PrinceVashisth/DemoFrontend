@@ -8,13 +8,7 @@ const sendToken = require("../utils/jwtTokens");
 
 //REGESTERING USER---------
 exports.register = catchAsyncError(async (req, res, next) => {
-  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
-  // });
-  // console.log('here is req data:', req.body)
-
+ 
   const { name, email, password, phoneNo } = req.body;
 
 
@@ -71,6 +65,21 @@ exports.userLogOut = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Logout failed", 500));
   }
 });
+
+// Fetch users by IDs
+exports.getUsersByIds = async (req, res) => {
+  try {
+    const userIds = req.query.id.split(','); // Extract user IDs from query params
+    const users = await Reg.find({ _id: { $in: userIds } }); // Find users by IDs
+    res.status(200).json({ users }); // Send users data in response
+  } catch (error) {
+    console.error("Error fetching user data", error);
+    res.status(500).json({ error: "Error fetching user data" });
+  }
+};
+
+
+
 
 
 // exports.register = async (req, res) => {

@@ -49,6 +49,8 @@ router.use(upload.array());
 router.post('/reg', regc.register);
 router.post('/logincheck', regc.logincheck);
 router.get('/logout', regc.userLogOut);
+router.get('/users', regc.getUserByIds); 
+
 router.get('/products', productController.getAllProducts);
 router.get('/product/:id', productController.getProductDetails);
 router.post('/products', upload.single('image'), productController.addProduct);
@@ -71,6 +73,8 @@ router.get("/admin/order", isAuthenticated, authorizeRoles("admin"), orderContro
 router.route("/admin/order/:id")
   .put(isAuthenticated, authorizeRoles("admin"), orderController.updateOrder)
   .delete(isAuthenticated, authorizeRoles("admin"), orderController.deleteOrder);
+  router.put('/admin/order/:id/status', isAuthenticated, authorizeRoles("admin"), orderController.updateOrderStatus);
+
 
 router.post("/payment/initiate", isAuthenticated, paymentController.initiate);
 router.post("/payment/success", isAuthenticated, paymentController.success);

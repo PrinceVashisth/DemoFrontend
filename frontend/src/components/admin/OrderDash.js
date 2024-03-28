@@ -8,16 +8,34 @@ import "./OrderDash.css"; // Import CSS file for styling
 function OrderDash() {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [newStatus, setNewStatus] = useState(""); // State to hold new status value
+    const [statuses, setStatuses] = useState({}); // State to hold statuses for each order
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         // Fetch orders from backend API
         const fetchOrders = async () => {
             try {
-                const response = await fetch("/api/admin/order");
-                if (response.ok) {
-                    const data = await response.json();
-                    setOrders(data.orders);
+                const orderResponse = await fetch("/api/admin/order");
+                if (orderResponse.ok) {
+                    const orderData = await orderResponse.json();
+                    setOrders(orderData.orders);
+
+                    // Fetch user data
+                    const userIds = orderData.orders.map(order => order.user._id);
+                    const userResponse = await fetch(`/api/users?id=${userIds.join(',')}`);
+                    if (userResponse.ok) {
+                        const userData = await userResponse.json();
+                        setUsers(userData.users);
+                    } else {
+                        console.error("Error fetching user data");
+                    }
+
+                    // Initialize statuses state with default status for each order
+                    const initialStatuses = {};
+                    orderData.orders.forEach(order => {
+                        initialStatuses[order._id] = "";
+                    });
+                    setStatuses(initialStatuses);
                 } else {
                     console.error("Error fetching orders");
                 }
@@ -28,6 +46,8 @@ function OrderDash() {
         fetchOrders();
     }, []);
 
+
+
     const openPopup = (order) => {
         setSelectedOrder(order);
     };
@@ -36,23 +56,28 @@ function OrderDash() {
         setSelectedOrder(null);
     };
 
-    // Function to handle status change
-    const handleStatusChange = async () => {
+    // Function to handle status change for a specific order
+    const handleStatusChange = async (orderId) => {
+        const newStatus = statuses[orderId];
         try {
             // Send a request to update order status
-            const response = await fetch(`/api/admin/order/${selectedOrder._id}/status`, {
+            const response = await fetch(`/api/admin/order/${orderId}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ status: newStatus }), // Send new status in the request body
             });
+            console.log('new status change send on api', response)
             if (response.ok) {
                 // If status update is successful, fetch updated orders
                 const data = await response.json();
                 setOrders(data.orders);
-                setNewStatus(""); // Clear new status after update
-                setSelectedOrder(null); // Close popup after update
+                // Clear status for the updated order
+                setStatuses(prevStatuses => ({
+                    ...prevStatuses,
+                    [orderId]: ""
+                }));
             } else {
                 console.error("Error updating order status");
             }
@@ -65,7 +90,7 @@ function OrderDash() {
         <>
             <Header />
             <section className="dash">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="row">
                         <Left />
                         <div className="col-md-8">
@@ -80,6 +105,7 @@ function OrderDash() {
                                             <th>Total Price</th>
                                             <th>Shipping Address</th>
                                             <th>Phone No.</th>
+                                            <th>Current Status</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -94,19 +120,26 @@ function OrderDash() {
                                                     <p>{order.shippingInfo.address} {order.shippingInfo.city} {order.shippingInfo.state} {order.shippingInfo.pincode}</p>
                                                 </td>
                                                 <td>{order.shippingInfo.phoneNo}</td>
-                                                <td>                        {/* Dropdown menu to select new status */}
-                                                    <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
-                                                        <option value="">Select Status</option>
-                                                        <option value="Processing">Processing</option>
-                                                        <option value="Order Accepted">Order Accepted</option>
-                                                        <option value="In Progress">In Progress</option>
-                                                        <option value="Out for Delivery">Out for Delivery</option>
-                                                        <option value="Delivered">Delivered</option>
-                                                    </select>
-                                                    {/* Button to update status */}
-                                                    <button onClick={handleStatusChange}>Update Status</button></td>
+                                                <td>{order.orderStatus}</td>
                                                 <td>
-                                                    <button onClick={() => openPopup(order)}>View Details</button>
+                                                    {/* Dropdown menu to select new status */}
+                                                    <div className="input-group input-group-sm d-flex">
+                                                    <select className="form-select form-select-sm" value={statuses[order._id]} onChange={(e) => setStatuses({...statuses, [order._id]: e.target.value})} disabled={order.orderStatus === "Delivered"}>
+                                                            <option value="">Select Status</option>
+                                                            <option value="Processing">Processing</option>
+                                                            <option value="Order Accepted">Order Accepted</option>
+                                                            <option value="In Progress">In Progress</option>
+                                                            <option value="Out for Delivery">Out for Delivery</option>
+                                                            <option value="Delivered">Delivered</option>
+                                                        </select>
+                                                        {/* Button to update status */}
+                                                        <button onClick={() => handleStatusChange(order._id)} className="btn btn-success btn-sm">Update</button>
+                                                    </div>
+                                                </td>
+
+
+                                                <td>
+                                                    <button onClick={() => openPopup(order)} className="btn btn-warning btn-sm">Details</button>
                                                 </td>
                                             </tr>
                                         ))}

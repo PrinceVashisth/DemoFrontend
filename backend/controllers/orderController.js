@@ -91,6 +91,9 @@ exports.getAllOrder = catchAsyncError(async (req, res, next) => {
   let totalAmount = 0;
   orders.forEach((order) => {
     totalAmount += order.totalPrice;
+    const user = User.findById(order.user);
+    order.user = user;
+    // console.log('user data:------', user)
   });
   res.status(201).json({
     status: true,
@@ -156,3 +159,29 @@ exports.deleteOrder = catchAsyncError(async (req, res, next) => {
     message: "Successfully Deleted Order",
   });
 });
+
+exports.updateOrderStatus = async (req, res) => {
+  const orderId = req.params.id;
+  const newStatus = req.body.status;
+
+  try {
+      // Find the order by ID
+      const order = await Order.findById(orderId);
+      if (!order) {
+          return res.status(404).json({ error: 'Order not found' });
+      }
+
+      // Update the status of the order
+      order.orderStatus = newStatus;
+      
+      // Save the updated order
+      await order.save();
+
+      // Fetch all orders again and send updated orders list as response
+      const orders = await Order.find();
+      res.json({ orders });
+  } catch (error) {
+      console.error('Error updating order status:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
