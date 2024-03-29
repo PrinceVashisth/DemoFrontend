@@ -1,7 +1,6 @@
 {
   "name": "eiko",
   "version": "0.1.0",
-  
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.4",
@@ -26,6 +25,7 @@
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.1",
     "react-spring": "^9.7.3",
+    "redux": "^5.0.1",
     "redux-thunk": "^2.4.2",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.0.5",

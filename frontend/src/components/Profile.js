@@ -6,23 +6,24 @@ import Header from "../partials/Header";
 
 const Profile = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const [orderDetails, setOrderDetails] = useState([]); // Order details state
+  const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    // Fetch user's orders from backend when component mounts
     const fetchUserOrders = async () => {
       try {
-        // Make API call to fetch user's orders
         const response = await fetch("/api/orders", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // Include credentials to send cookies
+          credentials: "include",
         });
         if (response.ok) {
           const data = await response.json();
-          setOrderDetails(data.orders); // Set order details state with fetched data
+          // Filter orders for the currently logged-in user
+          const filteredOrders = data.orders.filter(order => order.user === user._id);
+          setUserOrders(filteredOrders);
+          console.log('filtered order for profile', filteredOrders)
         } else {
           console.error("Error fetching user orders");
         }
@@ -31,13 +32,10 @@ const Profile = () => {
       }
     };
 
-    // Call fetchUserOrders function when component mounts
-    fetchUserOrders();
-  }, []); // Empty dependency array ensures useEffect runs only once after component mounts
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+    if (isAuthenticated) {
+      fetchUserOrders();
+    }
+  }, [isAuthenticated, user._id]);
 
   return (
     <div>
@@ -58,31 +56,36 @@ const Profile = () => {
           </div>
           <div className="container">
             <h2 className="my-4">Your Orders</h2>
-            <div className="row">
-              {orderDetails && orderDetails.length > 0 ? (
-                orderDetails.map((order) => {
-                  return (
-                    <div className="col-md-3 mb-4" key={order._id}>
-                      <Link to={`/products/${order._id}`} className="text-decoration-none">
-                        <div className="card">
-                          <img src={order.image} className="card-img-top" alt={order.name} />
-                          <div className="card-body">
-                            <h5 className="card-title">{order.name}</h5>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="col-md-12 text-center">
-                  <MdOutlineSearch size={70} />
-                  <h2 className="mt-4">No Orders Yet!</h2>
-                  <Link to="/products" className="btn btn-primary mt-4">Order Now</Link>
-                </div>
-              )}
-            </div>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date & Time</th>
+                  <th>Product Name</th>
+                  <th>Product Price</th>
+                  <th>Quantity</th>
+                  <th>Status</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                {userOrders.map(order => (
+                  order.orderItems.map(item => (
+                    <tr key={order._id + item._id}>
+                      <td>{order._id}</td>
+                      <td>{new Date(order.createdAt).toLocaleString()}</td>
+                      <td>{item.name}</td>
+                      <td>Rs.{item.price}</td>
+                      <td>{item.quantity}</td>
+                      <td>{order.orderStatus}</td>
+                      
+                    </tr>
+                  ))
+                ))}
+              </tbody>
+            </table>
           </div>
+
         </>
       ) : (
         <div className="container">
