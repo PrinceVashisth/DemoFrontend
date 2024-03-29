@@ -136,6 +136,22 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
   });
 });
 
+// Get orders for a specific user
+exports.getUserOrders = async (req, res) => {
+  try {
+    // Extract user ID from request
+    const userId = req.session.user._id;
+
+    // Find orders for the user
+    const orders = await Order.find({ user: userId });
+
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).json({ success: false, error: "Error fetching user orders" });
+  }
+};
+
 
 //function for updatin the stock
 async function updateStock(id, qty) {

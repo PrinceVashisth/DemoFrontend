@@ -66,6 +66,7 @@ router.get('/user/profile', (req, res) => {
       user: user
   });
 });
+router.get('/orders', isAuthenticated, orderController.getUserOrders);
 router.post("/order/new", isAuthenticated, orderController.newOrder);
 router.get("/order/:id", isAuthenticated, orderController.getSingleProduct);
 router.get("/orders/me", isAuthenticated, orderController.myOrder);
